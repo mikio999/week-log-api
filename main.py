@@ -18,6 +18,10 @@ app.add_middleware(
 class CheckRequest(BaseModel):
     url: str
 
+@app.get("/")
+def health_check():
+    return {"status": "awake"}
+
 @app.post("/check-length")
 def check_length(req: CheckRequest):
     headers = {
@@ -38,7 +42,6 @@ def check_length(req: CheckRequest):
         # 🚨 [네이버 블로그 전용 처리 로직]
         # ---------------------------------------------------------
         if "blog.naver.com" in url:
-            # 네이버 블로그는 진짜 내용이 'mainFrame'이라는 iframe 안에 숨어있음
             iframe = soup.find('iframe', id='mainFrame')
             
             if iframe:
