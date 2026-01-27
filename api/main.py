@@ -63,7 +63,7 @@ def check_length(req: CheckRequest):
         return {
             "success": True,
             "length": length,
-            "pass": length >= 500,
+            "pass": length >= 700,
             "message": f"현재 글자 수: {length}자"
         }
 
