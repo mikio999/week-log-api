@@ -93,7 +93,14 @@ def check_length(req: CheckRequest):
         url = url.replace("m.blog.naver.com", "blog.naver.com")
 
     # 노션 예외 처리
-    if "notion.site" in url or "notion.so" in url:
+    # 2026 Notion 도메인 이전(notion.so → notion.com) 대응:
+    # 앱에서 "링크 복사" 시 app.notion.com/p/... 형식으로 발급되므로 호스트 기반으로 판별
+    host = (urlparse(url).hostname or "").lower()
+    is_notion = (
+        host in ("notion.so", "notion.com", "notion.site")
+        or host.endswith((".notion.so", ".notion.com", ".notion.site"))
+    )
+    if is_notion:
         return {
             "success": True,
             "length": 9999,
